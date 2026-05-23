@@ -119,6 +119,12 @@ function LoginPage() {
               {busy ? "Logging in…" : "Log in"}
             </button>
           </form>
+
+          <div className="text-center mt-4">
+            <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground transition">
+              Forgot password?
+            </Link>
+          </div>
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
