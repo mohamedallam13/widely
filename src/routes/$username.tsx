@@ -24,6 +24,7 @@ const getProfile = createServerFn({ method: "GET" })
       .from("links")
       .select("id, title, url, featured, position, image_url")
       .eq("user_id", profile.id)
+      .eq("visible", true)
       .order("featured", { ascending: false })
       .order("position", { ascending: true });
     return { profile, links: links ?? [] };
