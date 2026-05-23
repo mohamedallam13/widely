@@ -4,7 +4,7 @@
 
 One beautiful profile page. A real REST API. Update your links from a script, a cron job, or your own app — no browser required.
 
-→ **Live:** [widelylinks.com](https://widelylinks.com) · staging: [widely.mohamedallam-tu.workers.dev](https://widely.mohamedallam-tu.workers.dev)
+→ **Live:** [widely.app](https://widely.app) · staging: [widely.mohamedallam-tu.workers.dev](https://widely.mohamedallam-tu.workers.dev)
 
 ---
 
@@ -76,7 +76,7 @@ npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 
 ## REST API
 
-Base URL: `https://widelylinks.com/api/public/v1`  
+Base URL: `https://widely.app/api/public/v1`  
 Auth: `Authorization: Bearer <your_api_key>`
 
 Generate an API key from your dashboard at `/app/api-keys`.
@@ -119,7 +119,7 @@ Full reference: [`Docs/api-reference.md`](Docs/api-reference.md)
 ### Google Apps Script example
 
 ```javascript
-const BASE = "https://widelylinks.com/api/public/v1";
+const BASE = "https://widely.app/api/public/v1";
 const KEY  = "your_api_key";
 
 function toggleLink(id, visible) {
