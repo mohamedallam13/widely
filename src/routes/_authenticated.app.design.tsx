@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { ImageIcon, Pencil, X } from "lucide-react";
+import { ImageIcon, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyProfile, updateMyProfile } from "@/lib/profile.functions";
 import { listLinks } from "@/lib/links.functions";
@@ -50,31 +50,6 @@ function DesignPage() {
   const [coverUploading, setCoverUploading] = useState(false);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
-  // Title & Bio modal
-  const [titleBioOpen, setTitleBioOpen] = useState(false);
-  const [draftTitle, setDraftTitle] = useState("");
-  const [draftBio, setDraftBio] = useState("");
-  const [savingTitleBio, setSavingTitleBio] = useState(false);
-
-  function openTitleBio() {
-    setDraftTitle(profile?.display_name ?? "");
-    setDraftBio((profile as { bio?: string })?.bio ?? "");
-    setTitleBioOpen(true);
-  }
-
-  async function saveTitleBio() {
-    setSavingTitleBio(true);
-    try {
-      await updateP({ data: { display_name: draftTitle.trim() || null, bio: draftBio.trim() || null } as never });
-      qc.invalidateQueries({ queryKey: ["my-profile"] });
-      setTitleBioOpen(false);
-      toast.success("Saved");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Failed to save");
-    } finally {
-      setSavingTitleBio(false);
-    }
-  }
 
   useEffect(() => {
     if (profile) {
@@ -133,28 +108,6 @@ function DesignPage() {
         </div>
 
         <div className="space-y-8">
-
-          {/* Title & Bio */}
-          <div>
-            <label className="block text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4 font-semibold">
-              Title &amp; Bio
-            </label>
-            <button
-              type="button"
-              onClick={openTitleBio}
-              className="w-full flex items-center justify-between rounded-2xl border border-border bg-card px-5 py-4 text-left hover:bg-secondary transition"
-            >
-              <div className="min-w-0">
-                <p className="font-semibold truncate">
-                  {profile?.display_name || `@${profile?.username}`}
-                </p>
-                <p className="text-sm text-muted-foreground truncate mt-0.5">
-                  {(profile as { bio?: string })?.bio || "Add a bio…"}
-                </p>
-              </div>
-              <Pencil className="size-4 text-muted-foreground ml-4 shrink-0" />
-            </button>
-          </div>
 
           {/* Cover photo */}
           <div>
@@ -258,56 +211,7 @@ function DesignPage() {
         />
       )}
 
-      {/* Title & Bio modal */}
-      {titleBioOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setTitleBioOpen(false)}>
-          <div className="w-full max-w-md bg-card rounded-3xl p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-bold">Title and bio</h2>
-              <button type="button" onClick={() => setTitleBioOpen(false)} className="text-muted-foreground hover:text-foreground transition">
-                <X className="size-5" />
-              </button>
-            </div>
 
-            <div className="space-y-3">
-              <div className="rounded-2xl border border-border bg-background px-4 pt-3 pb-3">
-                <label className="block text-xs text-muted-foreground mb-1">Title</label>
-                <input
-                  type="text"
-                  maxLength={30}
-                  value={draftTitle}
-                  onChange={(e) => setDraftTitle(e.target.value)}
-                  placeholder={`@${profile?.username}`}
-                  className="w-full bg-transparent text-sm focus:outline-none"
-                />
-                <p className="text-xs text-muted-foreground text-right mt-1">{draftTitle.length} / 30</p>
-              </div>
-
-              <div className="rounded-2xl border border-border bg-background px-4 pt-3 pb-3">
-                <label className="block text-xs text-muted-foreground mb-1">Bio</label>
-                <textarea
-                  maxLength={160}
-                  rows={3}
-                  value={draftBio}
-                  onChange={(e) => setDraftBio(e.target.value)}
-                  placeholder="Tell people about yourself…"
-                  className="w-full bg-transparent text-sm focus:outline-none resize-none"
-                />
-                <p className="text-xs text-muted-foreground text-right">{draftBio.length} / 160</p>
-              </div>
-
-              <button
-                type="button"
-                onClick={saveTitleBio}
-                disabled={savingTitleBio}
-                className="w-full rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition disabled:opacity-50"
-              >
-                {savingTitleBio ? "Saving…" : "Save"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
