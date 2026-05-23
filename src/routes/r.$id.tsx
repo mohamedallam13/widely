@@ -19,7 +19,7 @@ export const Route = createFileRoute("/r/$id")({
         if (!data) {
           return new Response("Not found", { status: 404 });
         }
-        void supabaseAdmin
+        await supabaseAdmin
           .from("links")
           .update({ click_count: (data.click_count ?? 0) + 1 })
           .eq("id", data.id);
