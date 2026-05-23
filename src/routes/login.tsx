@@ -11,17 +11,12 @@ const lookupEmailByHandle = createServerFn({ method: "GET" })
   .inputValidator((d: { handle: string }) =>
     z.object({ handle: z.string().min(1).max(40) }).parse(d)
   )
-  .handler(async ({ data }) => {
-    const { data: profile } = await supabaseAdmin
-      .from("profiles")
-      .select("id")
-      .ilike("username", data.handle)
-      .maybeSingle();
-
-    if (!profile) return { email: null };
-
-    const { data: user } = await supabaseAdmin.auth.admin.getUserById(profile.id);
-    return { email: user?.user?.email ?? null };
+  .handler(async ({ data: input }) => {
+    const { data: email, error } = await (supabaseAdmin as any).rpc("get_email_by_username", {
+      p_username: input.handle.toLowerCase(),
+    });
+    if (error || !email) return { email: null };
+    return { email: email as string };
   });
 
 function isEmail(value: string) {
