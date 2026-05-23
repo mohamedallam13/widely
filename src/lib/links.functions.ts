@@ -14,12 +14,11 @@ export const listLinks = createServerFn({ method: "GET" })
     const { supabase, userId } = context;
     const { data, error } = await supabase
       .from("links")
-      .select("id, title, url, featured, position, click_count, image_url, created_at")
+      .select("id, title, url, featured, visible, position, click_count, image_url, created_at")
       .eq("user_id", userId)
       .order("position", { ascending: true });
     if (error) throw new Error(error.message);
-    // visible column may not exist yet in DB — default to true
-    return (data ?? []).map((l) => ({ ...l, visible: true }));
+    return data ?? [];
   });
 
 export const createLink = createServerFn({ method: "POST" })
@@ -61,7 +60,7 @@ export const updateLink = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    const { id, visible: _visible, ...patch } = data; // strip visible until column exists
+    const { id, ...patch } = data;
     const { error } = await supabase.from("links").update(patch).eq("id", id).eq("user_id", userId);
     if (error) throw new Error(error.message);
     return { ok: true };
