@@ -129,16 +129,16 @@ function Landing() {
       </header>
 
       {/* Hero */}
-      <main className="max-w-6xl mx-auto px-6 pt-10 sm:pt-16 pb-24 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-24 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center overflow-hidden">
+        <div className="min-w-0">
           <span className="inline-block bg-accent/20 text-accent-foreground text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-5 border border-accent/30">
             Built for agents, scripts & humans
           </span>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-tight mb-6">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
             The link-in-bio<br/>
             your <span className="italic">AI can update.</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-md mb-4 leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground mb-4 leading-relaxed">
             Widely is a programmable link-in-bio. Every link, theme, and profile field is controllable via REST API — so your automations, agents, and scripts stay in sync without touching a dashboard.
           </p>
 
@@ -149,9 +149,9 @@ function Landing() {
               "Works with GAS, Zapier, n8n, Claude, or any HTTP client",
               "Beautiful profiles with 8 themes, click tracking & social icons",
             ].map((v) => (
-              <li key={v} className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="size-4 rounded-full bg-accent/20 flex items-center justify-center text-[10px]">✓</span>
-                {v}
+              <li key={v} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <span className="size-4 rounded-full bg-accent/20 flex items-center justify-center text-[10px] shrink-0 mt-0.5">✓</span>
+                <span>{v}</span>
               </li>
             ))}
           </ul>
@@ -163,16 +163,17 @@ function Landing() {
               const u = new FormData(e.currentTarget).get("u")?.toString().trim();
               window.location.href = `/signup${u ? `?u=${encodeURIComponent(u)}` : ""}`;
             }}
-            className="flex items-center bg-card border border-border rounded-full p-1.5 max-w-md shadow-sm focus-within:ring-2 focus-within:ring-accent transition"
+            className="flex items-center bg-card border border-border rounded-full p-1.5 w-full max-w-md shadow-sm focus-within:ring-2 focus-within:ring-accent transition"
           >
-            <span className="pl-4 pr-1 text-muted-foreground text-sm whitespace-nowrap">widely.app/</span>
+            <span className="pl-3 pr-1 text-muted-foreground text-sm whitespace-nowrap">widely.app/</span>
             <input
               name="u"
               placeholder="yourname"
               className="flex-1 bg-transparent outline-none text-sm py-2 min-w-0"
             />
-            <button className="rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition whitespace-nowrap">
-              Claim your link
+            <button className="rounded-full bg-primary text-primary-foreground px-4 sm:px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition whitespace-nowrap shrink-0">
+              <span className="hidden sm:inline">Claim your link</span>
+              <span className="sm:hidden">Claim</span>
             </button>
           </form>
         </div>
