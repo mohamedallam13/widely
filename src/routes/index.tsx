@@ -132,22 +132,22 @@ function Landing() {
       <main className="max-w-6xl mx-auto px-6 pt-10 sm:pt-16 pb-24 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div>
           <span className="inline-block bg-accent/20 text-accent-foreground text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-5 border border-accent/30">
-            Free forever · No credit card
+            Built for agents, scripts & humans
           </span>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-tight mb-6">
-            One link.<br/>
-            <span className="italic">Everything</span> you are.
+            The link-in-bio<br/>
+            your <span className="italic">AI can update.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-md mb-4 leading-relaxed">
-            Share your links, events, socials, and content from a single beautiful page. Built for creators and builders who want more than a basic link page.
+            Widely is a programmable link-in-bio. Every link, theme, and profile field is controllable via REST API — so your automations, agents, and scripts stay in sync without touching a dashboard.
           </p>
 
           {/* Value props */}
           <ul className="space-y-2 mb-8">
             {[
-              "8 handcrafted themes — yours in seconds",
-              "Real REST API — update links from any script",
-              "Click tracking, featured links, social icons",
+              "Full REST API with Bearer key auth — update from anywhere",
+              "Works with GAS, Zapier, n8n, Claude, or any HTTP client",
+              "Beautiful profiles with 8 themes, click tracking & social icons",
             ].map((v) => (
               <li key={v} className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span className="size-4 rounded-full bg-accent/20 flex items-center justify-center text-[10px]">✓</span>
@@ -186,13 +186,14 @@ function Landing() {
       {/* Features */}
       <section className="bg-primary text-primary-foreground py-20">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-12 max-w-xl leading-tight">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 max-w-xl leading-tight">
             Not just another link page.
           </h2>
+          <p className="text-primary-foreground/60 mb-12 max-w-lg text-lg">Linktree gives you a dashboard. Widely gives you an API.</p>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { t: "Beautiful by default", d: "Eight handcrafted themes. Featured links with cover photos, social icons, custom bio — rendered fast and clean on any device." },
-              { t: "Fully programmable", d: "A real REST API with Bearer key auth. Update links from a cron job, a Google Apps Script, or your own backend — no dashboard needed." },
+              { t: "API-first, always", d: "Every profile action — add a link, swap the theme, toggle visibility — is a REST call. Wire it into any stack: GAS, n8n, Zapier, Claude, or raw curl." },
+              { t: "Beautiful by default", d: "Eight handcrafted themes. Featured links with cover photos, social icons, custom bio — looks premium on any device without touching CSS." },
               { t: "Built to share", d: "One handle. One URL. Open Graph previews, click tracking, and instant redirect — works everywhere you paste it." },
             ].map((f) => (
               <div key={f.t} className="bg-primary-foreground/5 border border-primary-foreground/10 rounded-2xl p-6">
@@ -208,9 +209,9 @@ function Landing() {
       {/* API section */}
       <section id="api" className="max-w-4xl mx-auto px-6 py-24">
         <div className="text-center mb-10">
-          <span className="inline-block bg-accent text-primary text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">For developers</span>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">Update from anywhere.</h2>
-          <p className="text-muted-foreground max-w-lg mx-auto">Wire Widely into your own stack. Update links from a script, cron job, or Zapier.</p>
+          <span className="inline-block bg-accent text-primary text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">For builders & agents</span>
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4">Your profile, on autopilot.</h2>
+          <p className="text-muted-foreground max-w-lg mx-auto">One API key. Full control. Update links from a Google Apps Script, a Claude agent, a cron job, or a Zapier flow — no human required.</p>
         </div>
         <div className="rounded-3xl bg-primary text-primary-foreground p-6 sm:p-8 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto shadow-xl">
           <pre>{`curl -X POST https://widely.app/api/public/v1/links \\
@@ -228,9 +229,9 @@ function Landing() {
       <section className="max-w-6xl mx-auto px-6 pb-24">
         <div className="bg-accent rounded-[2rem] p-10 sm:p-16 text-center">
           <h2 className="text-4xl sm:text-6xl font-bold text-primary mb-4 leading-tight">
-            Get your link.<br/>Share everywhere.
+            Get your link.<br/>Let your agent run it.
           </h2>
-          <p className="text-primary/70 mb-8 text-lg">Free forever. Set up in under 2 minutes.</p>
+          <p className="text-primary/70 mb-8 text-lg">Set up in under 2 minutes. API key ready on day one.</p>
           <Link to="/signup" className="inline-flex rounded-full bg-primary px-8 py-4 text-primary-foreground font-semibold text-base hover:opacity-90 transition">
             Get started — it's free
           </Link>
