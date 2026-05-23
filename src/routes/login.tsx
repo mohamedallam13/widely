@@ -1,8 +1,30 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
+import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
+
+const lookupEmailByHandle = createServerFn({ method: "GET" })
+  .inputValidator((d: { handle: string }) =>
+    z.object({ handle: z.string().min(1).max(40) }).parse(d)
+  )
+  .handler(async ({ data }) => {
+    const { data: profile, error } = await supabaseAdmin
+      .from("profiles")
+      .select("id")
+      .ilike("username", data.handle)
+      .maybeSingle();
+
+    if (error || !profile) return { email: null };
+
+    const { data: user, error: userError } = await supabaseAdmin.auth.admin.getUserById(profile.id);
+    if (userError || !user?.user?.email) return { email: null };
+
+    return { email: user.user.email };
+  });
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Log in — Widely" }] }),
@@ -11,13 +33,22 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const nav = useNavigate();
-  const [email, setEmail] = useState("");
+  const [handle, setHandle] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
+
+    const clean = handle.replace(/^@/, "").trim().toLowerCase();
+    const { email } = await lookupEmailByHandle({ data: { handle: clean } });
+
+    if (!email) {
+      setBusy(false);
+      return toast.error("Handle not found. Check your @handle and try again.");
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (error) return toast.error(error.message);
@@ -58,11 +89,15 @@ function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3">
-            <input
-              type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              className="w-full bg-background border border-border rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-            />
+            <div className="relative">
+              <span className="absolute left-5 top-1/2 -translate-y-1/2 text-sm text-muted-foreground select-none">@</span>
+              <input
+                type="text" required value={handle}
+                onChange={(e) => setHandle(e.target.value.replace(/^@/, ""))}
+                placeholder="yourhandle"
+                className="w-full bg-background border border-border rounded-full pl-9 pr-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              />
+            </div>
             <input
               type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
