@@ -264,11 +264,13 @@ function LinksPage() {
         )}
       </div>
 
-      {/* Bio modal */}
+      {/* Title & Bio modal */}
       {bioModalOpen && (
-        <BioModal
+        <TitleBioModal
+          initialTitle={profile?.display_name ?? ""}
           initialBio={profile?.bio ?? ""}
-          onSave={(bio) => { profileM.mutate({ bio }); setBioModalOpen(false); }}
+          username={profile?.username ?? ""}
+          onSave={(display_name, bio) => { profileM.mutate({ display_name, bio }); setBioModalOpen(false); }}
           onClose={() => setBioModalOpen(false)}
         />
       )}
@@ -371,7 +373,11 @@ function ProfileHeader({
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <p className="font-bold text-base truncate">{profile?.display_name || `@${profile?.username}`}</p>
+        <button onClick={onOpenBio} className="group text-left w-full">
+          <p className="font-bold text-base truncate group-hover:opacity-70 transition">
+            {profile?.display_name || `@${profile?.username}`}
+          </p>
+        </button>
         {profile?.display_name && (
           <p className="text-xs text-muted-foreground">@{profile.username}</p>
         )}
@@ -379,15 +385,12 @@ function ProfileHeader({
         {/* Bio */}
         <button
           onClick={onOpenBio}
-          className="group mt-1.5 text-left w-full"
-          title="Edit bio"
+          className="group mt-1 text-left w-full"
+          title="Edit title & bio"
         >
           <p className="text-sm text-muted-foreground line-clamp-2 group-hover:text-foreground transition">
             {profile?.bio || <span className="italic">Add a bio…</span>}
           </p>
-          <span className="inline-flex items-center gap-1 text-xs text-accent opacity-0 group-hover:opacity-100 transition mt-0.5">
-            <Pencil className="size-3" /> Edit bio
-          </span>
         </button>
 
         {/* Social icons + edit */}
@@ -419,26 +422,44 @@ function ProfileHeader({
 
 /* ─── Bio Modal ─────────────────────────────────────────────────────────── */
 
-function BioModal({ initialBio, onSave, onClose }: {
+function TitleBioModal({ initialTitle, initialBio, username, onSave, onClose }: {
+  initialTitle: string;
   initialBio: string;
-  onSave: (bio: string) => void;
+  username: string;
+  onSave: (title: string, bio: string) => void;
   onClose: () => void;
 }) {
+  const [title, setTitle] = useState(initialTitle);
   const [bio, setBio] = useState(initialBio);
 
   return (
-    <Modal title="Edit bio" onClose={onClose}>
-      <div className="space-y-4">
-        <textarea
-          autoFocus
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          maxLength={400}
-          rows={4}
-          placeholder="Tell people a bit about yourself…"
-          className="w-full bg-background border border-border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent resize-none"
-        />
-        <p className="text-[11px] text-muted-foreground">{bio.length}/400</p>
+    <Modal title="Title and bio" onClose={onClose}>
+      <div className="space-y-3">
+        <div className="rounded-2xl border border-border bg-background px-4 pt-3 pb-3">
+          <label className="block text-xs text-muted-foreground mb-1">Title</label>
+          <input
+            autoFocus
+            type="text"
+            maxLength={80}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder={`@${username}`}
+            className="w-full bg-transparent text-sm focus:outline-none"
+          />
+          <p className="text-[11px] text-muted-foreground text-right mt-1">{title.length} / 80</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-background px-4 pt-3 pb-3">
+          <label className="block text-xs text-muted-foreground mb-1">Bio</label>
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            maxLength={400}
+            rows={3}
+            placeholder="Tell people a bit about yourself…"
+            className="w-full bg-transparent text-sm focus:outline-none resize-none"
+          />
+          <p className="text-[11px] text-muted-foreground text-right">{bio.length} / 400</p>
+        </div>
         <div className="flex gap-2 justify-end">
           <button
             onClick={onClose}
@@ -447,10 +468,10 @@ function BioModal({ initialBio, onSave, onClose }: {
             Cancel
           </button>
           <button
-            onClick={() => onSave(bio)}
+            onClick={() => onSave(title.trim(), bio.trim())}
             className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition"
           >
-            Save bio
+            Save
           </button>
         </div>
       </div>
