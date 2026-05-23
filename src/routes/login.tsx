@@ -12,19 +12,21 @@ const lookupEmailByHandle = createServerFn({ method: "GET" })
     z.object({ handle: z.string().min(1).max(40) }).parse(d)
   )
   .handler(async ({ data }) => {
-    const { data: profile, error } = await supabaseAdmin
+    const { data: profile } = await supabaseAdmin
       .from("profiles")
       .select("id")
       .ilike("username", data.handle)
       .maybeSingle();
 
-    if (error || !profile) return { email: null };
+    if (!profile) return { email: null };
 
-    const { data: user, error: userError } = await supabaseAdmin.auth.admin.getUserById(profile.id);
-    if (userError || !user?.user?.email) return { email: null };
-
-    return { email: user.user.email };
+    const { data: user } = await supabaseAdmin.auth.admin.getUserById(profile.id);
+    return { email: user?.user?.email ?? null };
   });
+
+function isEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Log in — Widely" }] }),
@@ -33,7 +35,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const nav = useNavigate();
-  const [handle, setHandle] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -41,12 +43,19 @@ function LoginPage() {
     e.preventDefault();
     setBusy(true);
 
-    const clean = handle.replace(/^@/, "").trim().toLowerCase();
-    const { email } = await lookupEmailByHandle({ data: { handle: clean } });
+    const raw = identifier.trim();
+    let email: string;
 
-    if (!email) {
-      setBusy(false);
-      return toast.error("Handle not found. Check your @handle and try again.");
+    if (isEmail(raw)) {
+      email = raw;
+    } else {
+      const handle = raw.replace(/^@/, "").toLowerCase();
+      const result = await lookupEmailByHandle({ data: { handle } });
+      if (!result.email) {
+        setBusy(false);
+        return toast.error("Handle not found. Check your @handle and try again.");
+      }
+      email = result.email;
     }
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -89,18 +98,18 @@ function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="relative">
-              <span className="absolute left-5 top-1/2 -translate-y-1/2 text-sm text-muted-foreground select-none">@</span>
-              <input
-                type="text" required value={handle}
-                onChange={(e) => setHandle(e.target.value.replace(/^@/, ""))}
-                placeholder="yourhandle"
-                className="w-full bg-background border border-border rounded-full pl-9 pr-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-              />
-            </div>
             <input
-              type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
+              type="text" required value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              placeholder="Email or @handle"
+              autoComplete="username"
+              className="w-full bg-background border border-border rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+            <input
+              type="password" required value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
+              autoComplete="current-password"
               className="w-full bg-background border border-border rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
             <button
