@@ -1,0 +1,155 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-brand-bg: var(--brand-bg);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-text: var(--brand-text);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-accent: var(--brand-accent);
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* App chrome — warm coral on deep plum */
+:root {
+  --radius: 1rem;
+
+  --background: oklch(0.96 0.03 50);    /* warm peach cream */
+  --foreground: oklch(0.22 0.08 340);   /* deep plum ink */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.08 340);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.08 340);
+  --primary: oklch(0.28 0.10 340);      /* deep plum */
+  --primary-foreground: oklch(0.96 0.03 50);
+  --secondary: oklch(0.93 0.05 50);
+  --secondary-foreground: oklch(0.28 0.10 340);
+  --muted: oklch(0.94 0.03 50);
+  --muted-foreground: oklch(0.48 0.06 340);
+  --accent: oklch(0.74 0.18 35);        /* vibrant coral */
+  --accent-foreground: oklch(0.22 0.08 340);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.22 0.08 340 / 12%);
+  --input: oklch(0.22 0.08 340 / 14%);
+  --ring: oklch(0.74 0.18 35);
+
+  /* Default profile theme */
+  --brand-bg: #FF8A65;
+  --brand-surface: #FFFFFF;
+  --brand-text: #2A0E2E;
+  --brand-muted: #6B4A5B;
+  --brand-accent: #2A0E2E;
+}
+
+/* Per-profile themes — applied via data-theme on the public profile root */
+[data-theme="noir"] {
+  --brand-bg: #0A0A0A;
+  --brand-surface: #1A1A1A;
+  --brand-text: #F5F5F5;
+  --brand-muted: #888888;
+  --brand-accent: #DFF27E;
+}
+
+[data-theme="neon"] {
+  --brand-bg: #050505;
+  --brand-surface: #111111;
+  --brand-text: #F0F0F0;
+  --brand-muted: #777777;
+  --brand-accent: #C8FF00;
+}
+
+/* CC branding — near black + steel blue (City Blue from CC palette) */
+[data-theme="midnight"] {
+  --brand-bg: #07090F;
+  --brand-surface: #0F1420;
+  --brand-text: #EDE8E0;
+  --brand-muted: #6B7A8D;
+  --brand-accent: #2D9FDB;
+}
+
+[data-theme="bone"] {
+  --brand-bg: #F5F1EA;
+  --brand-surface: #FFFFFF;
+  --brand-text: #1A1814;
+  --brand-muted: #6B6258;
+  --brand-accent: #B8472A;
+}
+
+[data-theme="indigo_mist"] {
+  --brand-bg: #C7D2FE;
+  --brand-surface: #FFFFFF;
+  --brand-text: #1E1B4B;
+  --brand-muted: #4F46E5;
+  --brand-accent: #1E1B4B;
+}
+
+[data-theme="sunset"] {
+  --brand-bg: #FFB199;
+  --brand-surface: #FFFFFF;
+  --brand-text: #3D1810;
+  --brand-muted: #8B4513;
+  --brand-accent: #3D1810;
+}
+
+[data-theme="forest"] {
+  --brand-bg: #BBF7D0;
+  --brand-surface: #FFFFFF;
+  --brand-text: #14532D;
+  --brand-muted: #15803D;
+  --brand-accent: #14532D;
+}
+
+[data-theme="mono"] {
+  --brand-bg: #FFFFFF;
+  --brand-surface: #F4F4F4;
+  --brand-text: #0A0A0A;
+  --brand-muted: #737373;
+  --brand-accent: #0A0A0A;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
