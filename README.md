@@ -1,8 +1,10 @@
 # Widely
 
-**The link-in-bio built for people who want control.**
+![Widely — The link-in-bio your AI can update.](public/og-image.png)
 
-One beautiful profile page. A real REST API. Update your links from a script, a cron job, or your own app — no browser required.
+**The link-in-bio your AI can update.**
+
+Full REST API + official MCP server. Control your profile from Claude, Cursor, GAS, Zapier, n8n, or curl — no browser required.
 
 → **Live:** [widely.app](https://widely.app) · staging: [widely.mohamedallam-tu.workers.dev](https://widely.mohamedallam-tu.workers.dev)
 
@@ -71,6 +73,30 @@ The `wrangler.jsonc` contains non-secret env vars. The service role key is store
 ```bash
 npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 ```
+
+---
+
+## MCP Server
+
+Widely ships an official MCP server — `@widely/mcp`. Add it to Claude, Cursor, Windsurf, or any MCP-compatible client and control your profile in plain conversation.
+
+```json
+{
+  "mcpServers": {
+    "widely": {
+      "command": "npx",
+      "args": ["-y", "@widely/mcp"],
+      "env": {
+        "WIDELY_API_KEY": "lv_live_..."
+      }
+    }
+  }
+}
+```
+
+Then just ask: *"Add a link to my new project"* or *"Switch my theme to noir."*
+
+Source: [`packages/mcp/`](packages/mcp/)
 
 ---
 
