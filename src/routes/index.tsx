@@ -145,8 +145,8 @@ function Landing() {
           {/* Value props */}
           <ul className="space-y-2 mb-8">
             {[
-              "Full REST API with Bearer key auth — update from anywhere",
-              "Works with GAS, Zapier, n8n, Claude, or any HTTP client",
+              "Official MCP server — works with Claude, Cursor & any AI client",
+              "Full REST API with Bearer key auth — GAS, Zapier, n8n, or raw curl",
               "Beautiful profiles with 8 themes, click tracking & social icons",
             ].map((v) => (
               <li key={v} className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -194,6 +194,7 @@ function Landing() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { t: "API-first, always", d: "Every profile action — add a link, swap the theme, toggle visibility — is a REST call. Wire it into any stack: GAS, n8n, Zapier, Claude, or raw curl." },
+              { t: "Official MCP server", d: "Install @widely/mcp and let Claude, Cursor, or any MCP-compatible AI client manage your profile directly. No browser. No dashboard. Just conversation." },
               { t: "Beautiful by default", d: "Eight handcrafted themes. Featured links with cover photos, social icons, custom bio — looks premium on any device without touching CSS." },
               { t: "Built to share", d: "One handle. One URL. Open Graph previews, click tracking, and instant redirect — works everywhere you paste it." },
             ].map((f) => (
@@ -207,22 +208,60 @@ function Landing() {
         </div>
       </section>
 
-      {/* API section */}
-      <section id="api" className="max-w-4xl mx-auto px-6 py-24">
-        <div className="text-center mb-10">
+      {/* API + MCP section */}
+      <section id="api" className="max-w-5xl mx-auto px-6 py-24">
+        <div className="text-center mb-12">
           <span className="inline-block bg-accent text-primary text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">For builders & agents</span>
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">Your profile, on autopilot.</h2>
-          <p className="text-muted-foreground max-w-lg mx-auto">One API key. Full control. Update links from a Google Apps Script, a Claude agent, a cron job, or a Zapier flow — no human required.</p>
+          <p className="text-muted-foreground max-w-lg mx-auto">One API key. One MCP server. Full control — from Google Apps Script, Claude, n8n, Zapier, or raw curl. No human required.</p>
         </div>
-        <div className="rounded-3xl bg-primary text-primary-foreground p-6 sm:p-8 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto shadow-xl">
-          <pre>{`curl -X POST https://widely.app/api/public/v1/links \\
-  -H "Authorization: Bearer wd_live_..." \\
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* REST API */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">REST API</span>
+              <span className="text-xs bg-secondary px-2 py-0.5 rounded-full text-muted-foreground">Bearer key auth</span>
+            </div>
+            <div className="rounded-2xl bg-primary text-primary-foreground p-5 font-mono text-xs leading-relaxed overflow-x-auto shadow-xl h-full">
+              <pre>{`# GAS · n8n · Zapier · curl · anything
+
+curl -X POST https://widely.app/api/public/v1/links \\
+  -H "Authorization: Bearer lv_live_..." \\
   -H "Content-Type: application/json" \\
   -d '{
-    "title": "New release",
-    "url": "https://example.com",
+    "title": "New drop",
+    "url":   "https://example.com",
     "featured": true
   }'`}</pre>
+            </div>
+          </div>
+
+          {/* MCP */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">MCP Server</span>
+              <span className="text-xs bg-accent/20 text-accent-foreground px-2 py-0.5 rounded-full font-semibold">Claude · Cursor · any AI client</span>
+            </div>
+            <div className="rounded-2xl bg-primary text-primary-foreground p-5 font-mono text-xs leading-relaxed overflow-x-auto shadow-xl">
+              <pre>{`# Add to your MCP config — one time
+
+{
+  "mcpServers": {
+    "widely": {
+      "command": "npx",
+      "args": ["-y", "@widely/mcp"],
+      "env": {
+        "WIDELY_API_KEY": "lv_live_..."
+      }
+    }
+  }
+}`}</pre>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
+              Then just ask Claude: <span className="italic">"Add a link to my new project"</span> or <span className="italic">"Switch my theme to noir."</span>
+            </p>
+          </div>
         </div>
       </section>
 

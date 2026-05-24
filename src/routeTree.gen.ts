@@ -13,10 +13,12 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as ConfirmEmailRouteImport } from './routes/confirm-email'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as UsernameRouteImport } from './routes/$username'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RIdRouteImport } from './routes/r.$id'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated.app'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated.app.index'
 import { Route as AuthenticatedAppLinksRouteImport } from './routes/_authenticated.app.links'
@@ -47,6 +49,11 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfirmEmailRoute = ConfirmEmailRouteImport.update({
+  id: '/confirm-email',
+  path: '/confirm-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -64,6 +71,11 @@ const IndexRoute = IndexRouteImport.update({
 const RIdRoute = RIdRouteImport.update({
   id: '/r/$id',
   path: '/r/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
@@ -115,11 +127,13 @@ const ApiPublicV1LinksIdRoute = ApiPublicV1LinksIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$username': typeof UsernameRoute
+  '/confirm-email': typeof ConfirmEmailRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
+  '/auth/callback': typeof AuthCallbackRoute
   '/r/$id': typeof RIdRoute
   '/app/api-keys': typeof AuthenticatedAppApiKeysRoute
   '/app/design': typeof AuthenticatedAppDesignRoute
@@ -133,10 +147,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$username': typeof UsernameRoute
+  '/confirm-email': typeof ConfirmEmailRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/r/$id': typeof RIdRoute
   '/app/api-keys': typeof AuthenticatedAppApiKeysRoute
   '/app/design': typeof AuthenticatedAppDesignRoute
@@ -152,11 +168,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$username': typeof UsernameRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/confirm-email': typeof ConfirmEmailRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/auth/callback': typeof AuthCallbackRoute
   '/r/$id': typeof RIdRoute
   '/_authenticated/app/api-keys': typeof AuthenticatedAppApiKeysRoute
   '/_authenticated/app/design': typeof AuthenticatedAppDesignRoute
@@ -172,11 +190,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$username'
+    | '/confirm-email'
     | '/forgot-password'
     | '/login'
     | '/reset-password'
     | '/signup'
     | '/app'
+    | '/auth/callback'
     | '/r/$id'
     | '/app/api-keys'
     | '/app/design'
@@ -190,10 +210,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$username'
+    | '/confirm-email'
     | '/forgot-password'
     | '/login'
     | '/reset-password'
     | '/signup'
+    | '/auth/callback'
     | '/r/$id'
     | '/app/api-keys'
     | '/app/design'
@@ -208,11 +230,13 @@ export interface FileRouteTypes {
     | '/'
     | '/$username'
     | '/_authenticated'
+    | '/confirm-email'
     | '/forgot-password'
     | '/login'
     | '/reset-password'
     | '/signup'
     | '/_authenticated/app'
+    | '/auth/callback'
     | '/r/$id'
     | '/_authenticated/app/api-keys'
     | '/_authenticated/app/design'
@@ -228,10 +252,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UsernameRoute: typeof UsernameRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  ConfirmEmailRoute: typeof ConfirmEmailRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   RIdRoute: typeof RIdRoute
   ApiPublicV1LinksRoute: typeof ApiPublicV1LinksRouteWithChildren
   ApiPublicV1ProfileRoute: typeof ApiPublicV1ProfileRoute
@@ -267,6 +293,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/confirm-email': {
+      id: '/confirm-email'
+      path: '/confirm-email'
+      fullPath: '/confirm-email'
+      preLoaderRoute: typeof ConfirmEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -293,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/r/$id'
       fullPath: '/r/$id'
       preLoaderRoute: typeof RIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/app': {
@@ -407,10 +447,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UsernameRoute: UsernameRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  ConfirmEmailRoute: ConfirmEmailRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   RIdRoute: RIdRoute,
   ApiPublicV1LinksRoute: ApiPublicV1LinksRouteWithChildren,
   ApiPublicV1ProfileRoute: ApiPublicV1ProfileRoute,
