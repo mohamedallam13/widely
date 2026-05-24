@@ -21,7 +21,7 @@ function SignupPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const u = username.toLowerCase().trim();
-    if (!/^[a-z0-9_]{3,30}$/.test(u)) return toast.error("Username: 3-30 chars, a-z 0-9 _");
+    if (!/^[a-z0-9_.]{3,30}$/.test(u)) return toast.error("Username: 3-30 chars, a-z 0-9 _ .");
     if (password.length < 8) return toast.error("Password must be 8+ characters");
     setBusy(true);
     const { error } = await supabase.auth.signUp({
