@@ -31,7 +31,7 @@ function AuthCallbackPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
-        <div className="text-4xl mb-4">✅</div>
+        <div className="w-12 h-12 rounded-full border-2 border-accent/30 border-t-accent animate-spin mx-auto mb-4" />
         <p className="text-sm text-muted-foreground">Confirming your email…</p>
       </div>
     </div>

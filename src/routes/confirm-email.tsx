@@ -35,7 +35,12 @@ function ConfirmEmailPage() {
         </Link>
 
         <div className="bg-card border border-border rounded-3xl p-8 shadow-sm text-center">
-          <div className="text-4xl mb-4">📬</div>
+          <div className="w-14 h-14 rounded-2xl bg-accent/20 flex items-center justify-center mx-auto mb-5">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent-foreground">
+              <rect x="2" y="4" width="20" height="16" rx="3" />
+              <path d="m2 7 10 7 10-7" />
+            </svg>
+          </div>
           <h1 className="text-2xl font-bold mb-2">Check your inbox</h1>
           <p className="text-sm text-muted-foreground mb-6">
             We sent a confirmation link to{" "}
