@@ -27,14 +27,13 @@ function SignupPage() {
     const { error } = await supabase.auth.signUp({
       email, password,
       options: {
-        emailRedirectTo: window.location.origin + "/app/links",
+        emailRedirectTo: window.location.origin + "/auth/callback",
         data: { username: u },
       },
     });
     setBusy(false);
     if (error) return toast.error(error.message);
-    toast.success("Account created");
-    nav({ to: "/app/links" });
+    nav({ to: "/confirm-email", search: { email } });
   }
 
   async function handleGoogle() {

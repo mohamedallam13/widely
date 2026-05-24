@@ -57,7 +57,12 @@ function LoginPage() {
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      if (error.code === "email_not_confirmed") {
+        return nav({ to: "/confirm-email", search: { email } });
+      }
+      return toast.error(error.message);
+    }
     nav({ to: "/app/links" });
   }
 
