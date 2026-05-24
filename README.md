@@ -59,20 +59,32 @@ VITE_SUPABASE_PROJECT_ID=your-project-ref
 
 ## Deploy
 
+> ⚠️ `main` is branch-protected. Never push directly — always open a PR.
+
+**Via PR (standard — triggers Cloudflare auto-build):**
+```bash
+git checkout -b feat/your-change
+# make changes
+git add . && git commit -m "feat: describe change"
+git push widely feat/your-change
+gh pr create --title "feat: ..." --body "..."
+gh pr review --approve
+gh pr merge --squash --delete-branch
+```
+
+**Direct deploy (skip GitHub, deploy local build immediately):**
 ```bash
 npm run build
 npx wrangler deploy
 ```
-
-Or push to trigger an automatic deploy:
-```bash
-git push widely main
-```
+Use this when you need env var changes or the GitHub build is lagging.
 
 The `wrangler.jsonc` contains non-secret env vars. The service role key is stored as a Cloudflare Worker secret:
 ```bash
 npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 ```
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full branch → PR → merge workflow.
 
 ---
 
