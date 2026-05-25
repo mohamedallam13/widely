@@ -686,8 +686,8 @@ function SortableRow({
           </button>
         </div>
 
-        <div className="mt-3 pt-3 border-t border-border flex items-center justify-between text-muted-foreground">
-          <div className="flex items-center gap-0.5">
+        <div className="mt-3 pt-3 border-t border-border flex items-center justify-between gap-2 flex-wrap text-muted-foreground">
+          <div className="flex items-center gap-0.5 min-w-0">
             <input
               ref={fileRef}
               type="file"
@@ -728,7 +728,7 @@ function SortableRow({
               <ExternalLink className="size-4" />
             </a>
 
-            <span className="flex items-center gap-1 px-2 text-xs tabular-nums">
+            <span className="flex items-center gap-1 px-2 text-xs tabular-nums shrink-0">
               <BarChart2 className="size-3.5" />
               {link.click_count} clicks
             </span>
@@ -736,7 +736,7 @@ function SortableRow({
 
           <button
             onClick={onDelete}
-            className="p-2 rounded-full hover:bg-destructive/10 hover:text-destructive transition"
+            className="p-2 rounded-full hover:bg-destructive/10 hover:text-destructive transition shrink-0"
           >
             <Trash2 className="size-4" />
           </button>
@@ -785,9 +785,9 @@ function EditableField({
     <button
       type="button"
       onClick={onStartEdit}
-      className={`group w-full text-left flex items-center gap-1.5 rounded-md px-2 py-1 -mx-2 hover:bg-secondary/50 transition ${className}`}
+      className={`group w-full text-left flex items-center gap-1.5 rounded-md px-2 py-1 hover:bg-secondary/50 transition ${className}`}
     >
-      <span className="truncate">{value || <span className="text-muted-foreground italic">{placeholder}</span>}</span>
+      <span className="truncate min-w-0">{value || <span className="text-muted-foreground italic">{placeholder}</span>}</span>
       <Pencil className="size-3 opacity-0 group-hover:opacity-60 shrink-0" />
     </button>
   );
