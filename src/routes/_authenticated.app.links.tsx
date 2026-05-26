@@ -163,7 +163,7 @@ function LinksPage() {
   return (
     <>
       <div className="grid md:grid-cols-[minmax(0,1fr)_340px] gap-8">
-        <div>
+        <div className="min-w-0">
           {/* Profile header */}
           <ProfileHeader
             profile={profile}
