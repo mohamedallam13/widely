@@ -288,7 +288,13 @@ curl -X PATCH \\
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        Widely © 2026
+        <div className="flex items-center justify-center gap-4">
+          <span>Widely © 2026</span>
+          <span>·</span>
+          <Link to="/privacy" className="hover:text-foreground transition">Privacy</Link>
+          <span>·</span>
+          <Link to="/terms" className="hover:text-foreground transition">Terms</Link>
+        </div>
       </footer>
     </div>
   );
