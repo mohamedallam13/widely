@@ -142,10 +142,6 @@
     border-color: var(--color-border);
   }
 
-  html {
-    overflow-x: hidden;
-  }
-
   body {
     overflow-x: hidden;
     background-color: var(--color-background);
