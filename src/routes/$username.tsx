@@ -36,20 +36,54 @@ export const Route = createFileRoute("/$username")({
     if (!result) throw notFound();
     return result;
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData ? [
-      { title: `${loaderData.profile.display_name || loaderData.profile.username} — Widely` },
-      { name: "description", content: loaderData.profile.bio || `Links from @${loaderData.profile.username}` },
-      { property: "og:title", content: loaderData.profile.display_name || loaderData.profile.username },
-      { property: "og:description", content: loaderData.profile.bio || `Links from @${loaderData.profile.username}` },
-      ...(loaderData.profile.avatar_url ? [{ property: "og:image", content: loaderData.profile.avatar_url }] : []),
-    ] : [],
-    links: loaderData?.profile.avatar_url ? [
-      { rel: "icon", href: loaderData.profile.avatar_url, type: "image/png" },
-    ] : [
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return { meta: [] };
+    const { profile, links } = loaderData;
+    const name = profile.display_name || profile.username;
+    const bio = profile.bio?.trim() || `Links and updates from ${name}`;
+    const url = `https://widely.app/${profile.username}`;
+    const image = profile.avatar_url || "https://widely.app/og-image.png";
+    const title = `${name} — Links`;
+    const linkNames = links.slice(0, 5).map((l: { title: string }) => l.title).join(", ");
+    const description = bio + (linkNames ? ` · ${linkNames}` : "");
+
+    const jsonLd = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "name": title,
+      "url": url,
+      "description": bio,
+      "mainEntity": {
+        "@type": "Person",
+        "name": name,
+        "url": url,
+        "description": bio,
+        ...(profile.avatar_url ? { "image": profile.avatar_url } : {}),
+        "sameAs": Object.values((profile.socials as Record<string, string> | null) || {}).filter(Boolean),
+      },
+    });
+
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { name: "robots", content: "index, follow" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "profile" },
+        { property: "og:url", content: url },
+        { property: "og:image", content: image },
+        { property: "og:site_name", content: "Widely" },
+        { name: "twitter:card", content: "summary" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "twitter:image", content: image },
+      ],
+      links: profile.avatar_url
+        ? [{ rel: "icon", href: profile.avatar_url, type: "image/png" }]
+        : [{ rel: "icon", href: "/favicon.png", type: "image/png" }],
+    };
+  },
   notFoundComponent: () => (
     <div className="min-h-screen bg-background flex items-center justify-center text-center px-4">
       <div>
@@ -87,6 +121,24 @@ function ArrowIcon() {
 
 function PublicProfile() {
   const { profile, links } = Route.useLoaderData();
+  const name = profile.display_name || profile.username;
+  const bio = profile.bio?.trim() || `Links and updates from ${name}`;
+  const url = `https://widely.app/${profile.username}`;
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "name": `${name} — Links`,
+    "url": url,
+    "description": bio,
+    "mainEntity": {
+      "@type": "Person",
+      "name": name,
+      "url": url,
+      "description": bio,
+      ...(profile.avatar_url ? { "image": profile.avatar_url } : {}),
+      "sameAs": Object.values((profile.socials as Record<string, string> | null) || {}).filter(Boolean),
+    },
+  });
   const initial = (profile.display_name || profile.username || "?")[0].toUpperCase();
   const socials = (profile.socials as Record<string, string> | null) || {};
   const socialEntries = Object.entries(socials).filter(([k, v]) => SOCIAL_META[k] && typeof v === "string" && v.trim().length > 0);
@@ -103,6 +155,7 @@ function PublicProfile() {
         fontFamily: "Inter, system-ui, sans-serif",
       }}
     >
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
       {/* Cover photo with gradient fade */}
       {(profile as { cover_url?: string | null }).cover_url && (
         <div className="absolute top-0 left-0 right-0 h-[280px] pointer-events-none">
