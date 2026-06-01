@@ -1,10 +1,44 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+const JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Widely",
+  "url": "https://widely.app",
+  "description": "Widely is a programmable link-in-bio platform with a full REST API and official MCP server. Control your profile from Claude, Cursor, GAS, n8n, Zapier, or any HTTP client.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": [
+    "Full REST API with Bearer key authentication",
+    "Official MCP server for Claude, Cursor, Windsurf",
+    "8 beautiful themes",
+    "Click tracking",
+    "Social icons",
+    "Google Apps Script integration",
+    "Zapier and n8n support"
+  ],
+});
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Widely — The link-in-bio your AI can update." },
-      { name: "description", content: "Widely is a programmable link-in-bio with a full REST API and official MCP server. Control your profile from Claude, Cursor, GAS, n8n, Zapier, or any HTTP client." },
+      { title: "Widely — The programmable link-in-bio with REST API & MCP server" },
+      { name: "description", content: "Widely is a link-in-bio platform built for automation. Full REST API, official MCP server, and 8 beautiful themes. Control your profile from Claude, Cursor, GAS, Zapier, n8n, or curl — no browser needed." },
+      { name: "keywords", content: "link in bio, linktree alternative, programmable link page, REST API link bio, MCP server, AI link management, Google Apps Script links, Zapier link page" },
+      { name: "robots", content: "index, follow" },
+      { property: "og:title", content: "Widely — The programmable link-in-bio with REST API & MCP server" },
+      { property: "og:description", content: "Full REST API + official MCP server. Control your profile from Claude, Cursor, GAS, Zapier, n8n, or curl. Beautiful themes, click tracking, social icons." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://widely.app" },
+      { property: "og:image", content: "https://widely.app/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:site_name", content: "Widely" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Widely — The programmable link-in-bio with REST API & MCP server" },
+      { name: "twitter:description", content: "Full REST API + official MCP server. Control your profile from Claude, Cursor, GAS, Zapier, n8n, or curl." },
+      { name: "twitter:image", content: "https://widely.app/og-image.png" },
     ],
   }),
   component: Landing,
@@ -67,6 +101,7 @@ const INTEGRATIONS = [
 function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON_LD }} />
       <style>{`
         @keyframes scroll-up {
           0%   { transform: translateY(0); }
@@ -288,7 +323,13 @@ curl -X PATCH \\
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        Widely © 2026
+        <div className="flex items-center justify-center gap-4">
+          <span>Widely © 2026</span>
+          <span>·</span>
+          <Link to="/privacy" className="hover:text-foreground transition">Privacy</Link>
+          <span>·</span>
+          <Link to="/terms" className="hover:text-foreground transition">Terms</Link>
+        </div>
       </footer>
     </div>
   );

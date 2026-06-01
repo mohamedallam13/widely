@@ -18,6 +18,14 @@ Widely is a Linktree-style link-in-bio platform with one key difference: everyth
 
 ---
 
+## Screenshots
+
+| Landing | Live Profile |
+|---------|-------------|
+| ![Widely landing page](public/screenshots/landing.png) | ![Cairo Confessions on Widely](public/screenshots/profile-cc.png) |
+
+---
+
 ## Stack
 
 | Layer | Tech |
