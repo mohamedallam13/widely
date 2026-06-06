@@ -5,6 +5,10 @@ export const Route = createFileRoute("/terms")({
     meta: [
       { title: "Terms of Service — Widely" },
       { name: "description", content: "The rules and terms governing use of the Widely platform." },
+      { name: "robots", content: "index, follow" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://widely.app/terms" },
     ],
   }),
   component: TermsPage,
@@ -38,7 +42,7 @@ function TermsPage() {
               Terms of Service ("Terms"). If you do not agree, do not use Widely.
             </p>
             <p>
-              Widely is operated by Mohamed Hassan Allam, Berlin, Germany. Contact:{" "}
+              For any questions about these Terms, contact:{" "}
               <a href="mailto:hello@widely.app" className="underline underline-offset-4 hover:text-primary transition">hello@widely.app</a>
             </p>
           </Section>
@@ -163,10 +167,10 @@ function TermsPage() {
 
           <Section title="11. Governing law">
             <p>
-              These Terms are governed by the laws of the Federal Republic of Germany, without regard to its
-              conflict-of-law provisions. For users in the EU, mandatory consumer protection laws of your
-              country of residence also apply. Any disputes shall be subject to the exclusive jurisdiction
-              of the courts of Berlin, Germany, unless mandatory local law requires otherwise.
+              These Terms are governed by applicable law. Nothing in these Terms limits any mandatory
+              consumer protection rights you may have under the laws of your country of residence.
+              Any disputes shall be resolved in good faith; if unresolved, subject to the jurisdiction
+              of competent courts as determined by applicable law.
             </p>
           </Section>
 

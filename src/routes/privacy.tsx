@@ -5,6 +5,10 @@ export const Route = createFileRoute("/privacy")({
     meta: [
       { title: "Privacy Policy — Widely" },
       { name: "description", content: "How Widely collects, stores, and protects your data." },
+      { name: "robots", content: "index, follow" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://widely.app/privacy" },
     ],
   }),
   component: PrivacyPage,
@@ -34,8 +38,7 @@ function PrivacyPage() {
 
           <Section title="1. Who we are">
             <p>
-              Widely ("we", "us", "our") is a programmable link-in-bio platform operated by Mohamed Hassan Allam,
-              based in Berlin, Germany. Our website is <strong>widely.app</strong>.
+              Widely ("we", "us", "our") is a programmable link-in-bio platform. Our website is <strong>widely.app</strong>.
             </p>
             <p>
               For any privacy-related questions, contact us at:{" "}
@@ -83,12 +86,12 @@ function PrivacyPage() {
             </p>
           </Section>
 
-          <Section title="5. Legal basis for processing (GDPR)">
-            <p>For users in the European Economic Area, our legal bases are:</p>
+          <Section title="5. Legal basis for processing">
+            <p>We process your data on the following bases:</p>
             <ul>
-              <li><strong>Contract performance (Art. 6(1)(b)):</strong> Processing your account and profile data to deliver the service you signed up for.</li>
-              <li><strong>Legitimate interests (Art. 6(1)(f)):</strong> Server logs and security monitoring to protect the platform and users.</li>
-              <li><strong>Consent (Art. 6(1)(a)):</strong> Any optional features that involve additional data collection (we will ask explicitly).</li>
+              <li><strong>Contract performance:</strong> Processing your account and profile data to deliver the service you signed up for.</li>
+              <li><strong>Legitimate interests:</strong> Server logs and security monitoring to protect the platform and users.</li>
+              <li><strong>Consent:</strong> Any optional features that involve additional data collection (we will ask explicitly).</li>
             </ul>
           </Section>
 
@@ -96,13 +99,13 @@ function PrivacyPage() {
             <Table
               headers={["Sub-processor", "Role", "Location"]}
               rows={[
-                ["Supabase", "Database, authentication, file storage", "EU (Frankfurt, Germany)"],
-                ["Cloudflare Workers", "Hosting, CDN, edge compute", "Global CDN / EU entry points"],
+                ["Supabase", "Database, authentication, file storage", "EU region"],
+                ["Cloudflare Workers", "Hosting, CDN, edge compute", "Global CDN"],
               ]}
             />
             <p>
-              Both sub-processors provide GDPR-compliant data processing agreements. Your data is stored
-              primarily in the EU (Frankfurt region on Supabase).
+              Both sub-processors maintain data processing agreements and follow industry-standard security practices.
+              Your data is stored primarily in the EU region on Supabase.
             </p>
           </Section>
 
@@ -115,8 +118,8 @@ function PrivacyPage() {
             </ul>
           </Section>
 
-          <Section title="8. Your rights (GDPR)">
-            <p>If you are in the EEA, you have the right to:</p>
+          <Section title="8. Your rights">
+            <p>You have the right to:</p>
             <ul>
               <li><strong>Access</strong> — request a copy of all data we hold about you</li>
               <li><strong>Rectification</strong> — correct inaccurate data (you can edit most of it directly in the app)</li>
@@ -131,8 +134,7 @@ function PrivacyPage() {
               We will respond within 30 days.
             </p>
             <p>
-              You also have the right to lodge a complaint with your local data protection authority (e.g.,{" "}
-              <a href="https://www.bfdi.bund.de" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-primary transition">BfDI in Germany</a>).
+              You also have the right to lodge a complaint with your local data protection authority.
             </p>
           </Section>
 
