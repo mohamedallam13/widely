@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 
 const JSON_LD = JSON.stringify({
   "@context": "https://schema.org",
@@ -21,6 +21,11 @@ const JSON_LD = JSON.stringify({
 });
 
 export const Route = createFileRoute("/")({
+  beforeLoad: async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data } = await supabase.auth.getSession();
+    if (data.session) throw redirect({ to: "/app/links" });
+  },
   head: () => ({
     meta: [
       { title: "Widely — The programmable link-in-bio with REST API & MCP server" },
@@ -39,6 +44,9 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: "Widely — The programmable link-in-bio with REST API & MCP server" },
       { name: "twitter:description", content: "Full REST API + official MCP server. Control your profile from Claude, Cursor, GAS, Zapier, n8n, or curl." },
       { name: "twitter:image", content: "https://widely.app/og-image.png" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://widely.app/" },
     ],
   }),
   component: Landing,

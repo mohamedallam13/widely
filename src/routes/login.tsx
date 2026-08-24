@@ -1,11 +1,10 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
 
 const lookupEmailByHandle = createServerFn({ method: "GET" })
@@ -25,7 +24,15 @@ function isEmail(value: string) {
 }
 
 export const Route = createFileRoute("/login")({
-  head: () => ({ meta: [{ title: "Log in — Widely" }] }),
+  beforeLoad: async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data } = await supabase.auth.getSession();
+    if (data.session) throw redirect({ to: "/app/links" });
+  },
+  head: () => ({
+    meta: [{ title: "Log in — Widely" }, { name: "robots", content: "noindex" }],
+    links: [{ rel: "canonical", href: "https://widely.app/login" }],
+  }),
   component: LoginPage,
 });
 
@@ -68,12 +75,15 @@ function LoginPage() {
 
   async function handleGoogle() {
     setBusy(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/app/links",
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin + "/auth/callback",
+      },
     });
-    if (result.error) {
+    if (error) {
       setBusy(false);
-      toast.error("Google sign-in failed");
+      toast.error("Google sign-in failed: " + error.message);
     }
   }
 

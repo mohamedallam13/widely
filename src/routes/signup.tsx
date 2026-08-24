@@ -1,12 +1,19 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/signup")({
-  head: () => ({ meta: [{ title: "Sign up free — Widely" }] }),
+  beforeLoad: async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data } = await supabase.auth.getSession();
+    if (data.session) throw redirect({ to: "/app/links" });
+  },
+  head: () => ({
+    meta: [{ title: "Sign up free — Widely" }, { name: "robots", content: "noindex" }],
+    links: [{ rel: "canonical", href: "https://widely.app/signup" }],
+  }),
   component: SignupPage,
 });
 
@@ -38,10 +45,13 @@ function SignupPage() {
 
   async function handleGoogle() {
     setBusy(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/app/links",
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin + "/auth/callback",
+      },
     });
-    if (result.error) { setBusy(false); toast.error("Google sign-in failed"); }
+    if (error) { setBusy(false); toast.error("Google sign-in failed: " + error.message); }
   }
 
   return (

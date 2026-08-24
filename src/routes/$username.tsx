@@ -79,9 +79,12 @@ export const Route = createFileRoute("/$username")({
         { name: "twitter:description", content: description },
         { name: "twitter:image", content: image },
       ],
-      links: profile.avatar_url
-        ? [{ rel: "icon", href: profile.avatar_url, type: "image/png" }]
-        : [{ rel: "icon", href: "/favicon.png", type: "image/png" }],
+      links: [
+        { rel: "canonical", href: url },
+        ...(profile.avatar_url
+          ? [{ rel: "icon", href: profile.avatar_url, type: "image/png" }]
+          : [{ rel: "icon", href: "/favicon.png", type: "image/png" }]),
+      ],
     };
   },
   notFoundComponent: () => (
