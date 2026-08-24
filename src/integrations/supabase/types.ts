@@ -47,6 +47,38 @@ export type Database = {
         }
         Relationships: []
       }
+      click_events: {
+        Row: {
+          clicked_at: string
+          id: string
+          link_id: string
+          referrer: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          clicked_at?: string
+          id?: string
+          link_id: string
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          clicked_at?: string
+          id?: string
+          link_id?: string
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "click_events_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "links"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       links: {
         Row: {
           click_count: number
@@ -133,7 +165,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_link_click: {
+        Args: { p_link_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       profile_theme:
