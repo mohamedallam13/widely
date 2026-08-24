@@ -28,5 +28,18 @@ export function createWidelyClient(apiKey: string) {
       get:    ()             => request('GET',   '/profile'),
       update: (body: unknown) => request('PATCH', '/profile', body),
     },
+    clicks: {
+      list:  (id: string, params?: { limit?: number; offset?: number }) =>
+        request('GET', `/links/${id}/clicks${toQuery(params)}`),
+      stats: (id: string, params?: { days?: number }) =>
+        request('GET', `/links/${id}/stats${toQuery(params)}`),
+    },
   };
+}
+
+function toQuery(params?: Record<string, unknown>): string {
+  if (!params) return '';
+  const entries = Object.entries(params).filter(([, v]) => v !== undefined);
+  if (entries.length === 0) return '';
+  return '?' + new URLSearchParams(entries.map(([k, v]) => [k, String(v)])).toString();
 }

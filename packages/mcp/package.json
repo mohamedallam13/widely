@@ -1,6 +1,6 @@
 {
   "name": "@widely/mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Official Widely MCP server — manage your links and profile from Claude, Cursor, and any MCP-compatible client.",
   "type": "module",
   "bin": {

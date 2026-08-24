@@ -100,6 +100,31 @@ server.registerTool('update_profile', {
   return { content: [{ type: 'text', text: JSON.stringify(data, null, 2) }] };
 });
 
+// ── Clicks ───────────────────────────────────────────────────────────────────
+
+server.registerTool('list_click_events', {
+  description: 'List individual click events for a link (most recent first), with referrer and user agent per click.',
+  inputSchema: {
+    id:     z.string().describe('The link UUID'),
+    limit:  z.number().int().min(1).max(200).optional().describe('Max events to return (default 50)'),
+    offset: z.number().int().min(0).optional().describe('Pagination offset'),
+  },
+}, async ({ id, limit, offset }) => {
+  const data = await client.clicks.list(id, { limit, offset });
+  return { content: [{ type: 'text', text: JSON.stringify(data, null, 2) }] };
+});
+
+server.registerTool('get_link_stats', {
+  description: 'Get click stats for a link: total clicks, clicks in range, and a daily breakdown.',
+  inputSchema: {
+    id:   z.string().describe('The link UUID'),
+    days: z.number().int().min(1).max(365).optional().describe('How many days back to break down (default 30)'),
+  },
+}, async ({ id, days }) => {
+  const data = await client.clicks.stats(id, { days });
+  return { content: [{ type: 'text', text: JSON.stringify(data, null, 2) }] };
+});
+
 // ── Start ────────────────────────────────────────────────────────────────────
 
 const transport = new StdioServerTransport();

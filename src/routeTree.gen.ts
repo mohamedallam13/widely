@@ -30,6 +30,8 @@ import { Route as ApiPublicV1ProfileRouteImport } from './routes/api/public/v1/p
 import { Route as ApiPublicV1LinksRouteImport } from './routes/api/public/v1/links'
 import { Route as ApiPublicV1LinksReorderRouteImport } from './routes/api/public/v1/links.reorder'
 import { Route as ApiPublicV1LinksIdRouteImport } from './routes/api/public/v1/links.$id'
+import { Route as ApiPublicV1LinksIdStatsRouteImport } from './routes/api/public/v1/links.$id.stats'
+import { Route as ApiPublicV1LinksIdClicksRouteImport } from './routes/api/public/v1/links.$id.clicks'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -135,6 +137,17 @@ const ApiPublicV1LinksIdRoute = ApiPublicV1LinksIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => ApiPublicV1LinksRoute,
 } as any)
+const ApiPublicV1LinksIdStatsRoute = ApiPublicV1LinksIdStatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => ApiPublicV1LinksIdRoute,
+} as any)
+const ApiPublicV1LinksIdClicksRoute =
+  ApiPublicV1LinksIdClicksRouteImport.update({
+    id: '/clicks',
+    path: '/clicks',
+    getParentRoute: () => ApiPublicV1LinksIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -155,8 +168,10 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AuthenticatedAppIndexRoute
   '/api/public/v1/links': typeof ApiPublicV1LinksRouteWithChildren
   '/api/public/v1/profile': typeof ApiPublicV1ProfileRoute
-  '/api/public/v1/links/$id': typeof ApiPublicV1LinksIdRoute
+  '/api/public/v1/links/$id': typeof ApiPublicV1LinksIdRouteWithChildren
   '/api/public/v1/links/reorder': typeof ApiPublicV1LinksReorderRoute
+  '/api/public/v1/links/$id/clicks': typeof ApiPublicV1LinksIdClicksRoute
+  '/api/public/v1/links/$id/stats': typeof ApiPublicV1LinksIdStatsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -176,8 +191,10 @@ export interface FileRoutesByTo {
   '/app': typeof AuthenticatedAppIndexRoute
   '/api/public/v1/links': typeof ApiPublicV1LinksRouteWithChildren
   '/api/public/v1/profile': typeof ApiPublicV1ProfileRoute
-  '/api/public/v1/links/$id': typeof ApiPublicV1LinksIdRoute
+  '/api/public/v1/links/$id': typeof ApiPublicV1LinksIdRouteWithChildren
   '/api/public/v1/links/reorder': typeof ApiPublicV1LinksReorderRoute
+  '/api/public/v1/links/$id/clicks': typeof ApiPublicV1LinksIdClicksRoute
+  '/api/public/v1/links/$id/stats': typeof ApiPublicV1LinksIdStatsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -200,8 +217,10 @@ export interface FileRoutesById {
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/api/public/v1/links': typeof ApiPublicV1LinksRouteWithChildren
   '/api/public/v1/profile': typeof ApiPublicV1ProfileRoute
-  '/api/public/v1/links/$id': typeof ApiPublicV1LinksIdRoute
+  '/api/public/v1/links/$id': typeof ApiPublicV1LinksIdRouteWithChildren
   '/api/public/v1/links/reorder': typeof ApiPublicV1LinksReorderRoute
+  '/api/public/v1/links/$id/clicks': typeof ApiPublicV1LinksIdClicksRoute
+  '/api/public/v1/links/$id/stats': typeof ApiPublicV1LinksIdStatsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -226,6 +245,8 @@ export interface FileRouteTypes {
     | '/api/public/v1/profile'
     | '/api/public/v1/links/$id'
     | '/api/public/v1/links/reorder'
+    | '/api/public/v1/links/$id/clicks'
+    | '/api/public/v1/links/$id/stats'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -247,6 +268,8 @@ export interface FileRouteTypes {
     | '/api/public/v1/profile'
     | '/api/public/v1/links/$id'
     | '/api/public/v1/links/reorder'
+    | '/api/public/v1/links/$id/clicks'
+    | '/api/public/v1/links/$id/stats'
   id:
     | '__root__'
     | '/'
@@ -270,6 +293,8 @@ export interface FileRouteTypes {
     | '/api/public/v1/profile'
     | '/api/public/v1/links/$id'
     | '/api/public/v1/links/reorder'
+    | '/api/public/v1/links/$id/clicks'
+    | '/api/public/v1/links/$id/stats'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -438,6 +463,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicV1LinksIdRouteImport
       parentRoute: typeof ApiPublicV1LinksRoute
     }
+    '/api/public/v1/links/$id/stats': {
+      id: '/api/public/v1/links/$id/stats'
+      path: '/stats'
+      fullPath: '/api/public/v1/links/$id/stats'
+      preLoaderRoute: typeof ApiPublicV1LinksIdStatsRouteImport
+      parentRoute: typeof ApiPublicV1LinksIdRoute
+    }
+    '/api/public/v1/links/$id/clicks': {
+      id: '/api/public/v1/links/$id/clicks'
+      path: '/clicks'
+      fullPath: '/api/public/v1/links/$id/clicks'
+      preLoaderRoute: typeof ApiPublicV1LinksIdClicksRouteImport
+      parentRoute: typeof ApiPublicV1LinksIdRoute
+    }
   }
 }
 
@@ -470,13 +509,26 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface ApiPublicV1LinksIdRouteChildren {
+  ApiPublicV1LinksIdClicksRoute: typeof ApiPublicV1LinksIdClicksRoute
+  ApiPublicV1LinksIdStatsRoute: typeof ApiPublicV1LinksIdStatsRoute
+}
+
+const ApiPublicV1LinksIdRouteChildren: ApiPublicV1LinksIdRouteChildren = {
+  ApiPublicV1LinksIdClicksRoute: ApiPublicV1LinksIdClicksRoute,
+  ApiPublicV1LinksIdStatsRoute: ApiPublicV1LinksIdStatsRoute,
+}
+
+const ApiPublicV1LinksIdRouteWithChildren =
+  ApiPublicV1LinksIdRoute._addFileChildren(ApiPublicV1LinksIdRouteChildren)
+
 interface ApiPublicV1LinksRouteChildren {
-  ApiPublicV1LinksIdRoute: typeof ApiPublicV1LinksIdRoute
+  ApiPublicV1LinksIdRoute: typeof ApiPublicV1LinksIdRouteWithChildren
   ApiPublicV1LinksReorderRoute: typeof ApiPublicV1LinksReorderRoute
 }
 
 const ApiPublicV1LinksRouteChildren: ApiPublicV1LinksRouteChildren = {
-  ApiPublicV1LinksIdRoute: ApiPublicV1LinksIdRoute,
+  ApiPublicV1LinksIdRoute: ApiPublicV1LinksIdRouteWithChildren,
   ApiPublicV1LinksReorderRoute: ApiPublicV1LinksReorderRoute,
 }
 
